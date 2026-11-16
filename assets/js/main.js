@@ -6,6 +6,22 @@
   var root = doc.documentElement;
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
   var finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  var I18N = window.I18N || { ui: { de: {} }, en: {}, it: {} };
+  var LANGS = ['de', 'en', 'it'];
+  var lang = 'de';
+
+  function each(sel, fn) {
+    Array.prototype.forEach.call(doc.querySelectorAll(sel), fn);
+  }
+  function store(key, value) {
+    try { localStorage.setItem(key, value); } catch (e) { /* privater Modus */ }
+  }
+  function load(key) {
+    try { return localStorage.getItem(key); } catch (e) { return null; }
+  }
+  function ui(key) {
+    return (I18N.ui[lang] || I18N.ui.de)[key] || '';
+  }
 
   /* ------------------------------------------------------------------
      1. Dot-Matrix-Name (5x7, wie die Ziffern in Blackouter)
@@ -97,116 +113,12 @@
   }
 
   /* ------------------------------------------------------------------
-     3. Sprache DE / EN
-     Deutsch steht im HTML, Englisch hier. Die Wahl liegt in localStorage
-     (kein Cookie, wird nicht übertragen).
+     3. Sprache DE / EN / IT
+     Deutsch steht im HTML, die anderen Sprachen in i18n.js. Die Wahl liegt
+     in localStorage (kein Cookie, wird nicht übertragen).
      ------------------------------------------------------------------ */
-  var EN = {
-    title: 'Giacomo Greco – Junior Software Developer',
-    skip: 'Skip to content',
-    navLabel: 'Main navigation',
-    navProjects: 'Projects',
-    navExperience: 'Experience',
-    navSkills: 'Skills',
-    navContact: 'Contact',
-    metaLabel: 'At a glance',
-    metaLoc: 'Metzingen, DE · 48.54° N 9.28° E',
-    metaIhk: 'Qualified 07/2026',
-    metaStatus: 'available now',
-    role: 'IT specialist for application development',
-    claim: 'I build software you can <em>touch</em> – from microcontroller firmware to Android apps.',
-    ctaProjects: 'View projects',
-    ctaCv: 'CV (PDF)',
-
-    hProjects: 'Projects',
-    leadProjects: 'Three Android apps and two devices. All designed, built and finished by me – including the parts where the first approach did not work.',
-    lblProblem: 'Problem',
-    lblSolved: 'Solved',
-    linkPrivate: 'Private repository – happy to walk you through the code in an interview.',
-    hwHead: 'Hardware',
-
-    altScriba: 'Scriba: handwritten physics notes with a formula, a recognised ellipse and a filled triangle, with the toolbar above',
-    altScriba2: 'Scriba: imported PDF with handwritten markings and a margin note',
-    altScriba3: 'Scriba: triangle selected with the lasso, with handles to move, scale and rotate',
-    p1Kind: 'Android · Tablet',
-    p1What: 'Android tablet app for handwritten notes and PDF annotation.',
-    p1Problem: 'Writing with a stylus and annotating PDFs – as direct as paper, with no account and no cloud. Every millisecond of lag between pen tip and line gets in the way.',
-    p1s1: '<strong>Front-buffer rendering</strong> for latency-free pen input: the stroke bypasses the normal draw cycle, and motion prediction fills in the next few milliseconds.',
-    p1s2: '<strong>Custom shape recognition:</strong> hold the pen still and a wobbly circle snaps to a clean one – same for rectangles, triangles and polygons. Purely geometric, using a least-squares fit.',
-    p1s3: '<strong>Atomic saving</strong> (temp file, then rename) with a .bak backup in my own versioned binary format.',
-    p1s4: '<strong>Undo/redo</strong> for every operation, built on action objects.',
-    p1s5: '<strong>100% offline</strong> – the app does not even request the INTERNET permission.',
-
-    altBlackouter: 'Blackouter: timer set to 30 minutes with dot-matrix digits, quick-select buttons, keypad and a red start button',
-    p2Kind: 'Android · Sleep timer',
-    p2What: 'Sleep timer that pauses media (Twitch, YouTube, Spotify), returns to the home screen and locks the display.',
-    p2Problem: 'Fall asleep while streaming and the screen and battery run all night. The timer has to fire reliably – even after Android has long pushed the app into the background.',
-    p2s1: '<strong>Restart instead of patching:</strong> the first attempt in React Native failed in the background. I switched to AlarmManager (<code>setExactAndAllowWhileIdle</code>) and Device Admin (<code>lockNow</code>) – it now works even with the app closed.',
-    p2s2: '<strong>Audio focus</strong> requests to cleanly pause other apps.',
-    p2s3: '<strong>Dot-matrix digits</strong> drawn with CustomPainter in the Nothing design language – the same dots as in my name above.',
-
-    altFh6: 'FH6 Tempi: list of lap times with car class, track type and records highlighted in green',
-    p3Kind: 'Android · Offline',
-    p3What: 'Offline app for lap times in Forza Horizon 6.',
-    p3Problem: 'Recording and comparing my own lap times across many tracks and cars – on the phone next to the controller, with no server and no sign-up.',
-    p3s1: '<strong>APK from the cloud:</strong> GitHub Actions builds the app – no local Android setup needed.',
-    p3s2: '<strong>Filters, sorting and personal records</strong> per track, highlighted in green – fully offline on the device.',
-    p3s3: '<strong>JSON import/export</strong> for backups and moving between devices.',
-
-    altAmpel: 'MTC-Ampel: ESP32 board with red and green LEDs and a buzzer inside its enclosure',
-    p4Kind: 'ESP32 · IHK final project',
-    p4What: 'Signal light for production monitoring: shows tightening results right at the station.',
-    p4Problem: 'The operator should see and hear immediately whether a screw joint was OK – without looking at a screen.',
-    p4s1: '<strong>Tightening results via TCP/OpenProtocol</strong>, received and evaluated directly on the microcontroller.',
-    p4s2: '<strong>ESP32 as a Wi-Fi access point</strong> – runs independently of the plant network.',
-    p4s3: '<strong>OK/NOK via LEDs and buzzer.</strong> IHK grade: 85 points.',
-
-    altWetter: 'Weather station: 3D-printed enclosure with an OLED display showing temperature, humidity and pressure',
-    p5Kind: 'ESP32 · IoT',
-    p5What: 'IoT weather station with an ESP32 (WiFi LoRa 32 V3) and a BME688 sensor.',
-    p5Problem: 'Measuring and displaying indoor climate live – as a finished device on the desk, not a breadboard with a tangle of wires.',
-    p5s1: '<strong>BME688 over I²C:</strong> temperature, humidity, pressure and gas resistance.',
-    p5s2: '<strong>Live readout</strong> on the OLED display.',
-    p5s3: '<strong>Custom enclosure</strong> designed in Fusion 360 and 3D-printed.',
-
-    hExperience: 'Experience',
-    tNowWhen: 'Now',
-    tNowTitle: 'Ready for my first junior role',
-    tNowText: 'Apprenticeship completed, five projects of my own shipped. I am looking for a team where I build applications – ideally close to the hardware.',
-    tAzubiTitle: 'Apprenticeship: IT specialist for application development (Fachinformatiker)',
-    tA1: 'C++ firmware for ESP32, STM32 and Atmel; drivers for SPI, I²C, UART and GPIO',
-    tA2: 'Web interfaces in HTML, CSS and JavaScript; company websites in WordPress',
-    tA3: 'Administration of Arch, Ubuntu and Raspberry Pi OS',
-    tA4k: 'Network',
-    tA4: 'TCP/IP, DHCP, subnetting, QNAP NAS, virtual machines',
-    tA5: 'Git/GitHub, technical documentation for colleagues',
-    tA6: '3D models and enclosures in Fusion 360',
-    tAzubiNote: 'IHK certificate July 2026 · Final project: ESP32 signal light with TCP/OpenProtocol, 85 points.',
-    tSchoolTitle: 'Vocational school, application development track',
-
-    leadSkills: 'What I have actually worked with – during the apprenticeship or in the projects above.',
-    skProto: 'Protocols: SPI, I²C, UART, TCP',
-    skSysK: 'Systems',
-    skNet: 'Networking',
-    skVm: 'VMs',
-    skOtherK: 'Other',
-    langsK: 'Languages',
-    lIt: 'Italian',
-    lItLvl: 'Native',
-    lDe: 'German',
-    lEn: 'English',
-
-    hContact: 'Contact',
-    cta: 'Open to junior roles <span class="cta-now">right now<i aria-hidden="true"></i></span>',
-    ctaSub: 'Application development, mobile or embedded. Get in touch – email is the fastest way.',
-    footNote: 'No cookies. No trackers. Hand-written in HTML, CSS and JavaScript.',
-    legalLabel: 'Legal',
-    privacy: 'Privacy'
-  };
-
-  var DE = {};           // wird beim ersten Wechsel aus dem DOM gefüllt
+  var DE = {};
   var deTitle = doc.title;
-  var lang = 'de';
 
   function snapshotGerman() {
     each('[data-i18n]', function (el) {
@@ -215,47 +127,139 @@
     });
     each('[data-i18n-alt]', function (el) { DE[el.getAttribute('data-i18n-alt')] = el.alt; });
     each('[data-i18n-aria]', function (el) { DE[el.getAttribute('data-i18n-aria')] = el.getAttribute('aria-label'); });
+    // Standardbild merken, damit sprachabhängige Bilder zurückwechseln können
+    each('.shot img', function (img) { img.setAttribute('data-src-de', img.getAttribute('src')); });
   }
 
-  function each(sel, fn) {
-    Array.prototype.forEach.call(doc.querySelectorAll(sel), fn);
+  function dict() {
+    return lang === 'de' ? DE : (I18N[lang] || DE);
   }
 
   function setLang(next, initial) {
-    lang = next === 'en' ? 'en' : 'de';
-    var dict = lang === 'en' ? EN : DE;
+    lang = LANGS.indexOf(next) >= 0 ? next : 'de';
+    var d = dict();
     root.lang = lang;
-    doc.title = lang === 'en' ? EN.title : deTitle;
+    doc.title = lang === 'de' ? deTitle : (d.title || deTitle);
 
     each('[data-i18n]', function (el) {
-      var v = dict[el.getAttribute('data-i18n')];
+      var v = d[el.getAttribute('data-i18n')];
       if (v == null) return;
       if (el.id === 'role') { if (!initial) renderRole(v, false); }
       else el.innerHTML = v;
     });
     each('[data-i18n-alt]', function (el) {
-      var v = dict[el.getAttribute('data-i18n-alt')];
+      var v = d[el.getAttribute('data-i18n-alt')];
       if (v != null) el.alt = v;
     });
     each('[data-i18n-aria]', function (el) {
-      var v = dict[el.getAttribute('data-i18n-aria')];
+      var v = d[el.getAttribute('data-i18n-aria')];
       if (v != null) el.setAttribute('aria-label', v);
     });
+
+    // Screenshots in der passenden Sprache, falls vorhanden
+    each('.shot img', function (img) {
+      var src = img.getAttribute('data-src-' + lang) || img.getAttribute('data-src-de');
+      if (src && img.getAttribute('src') !== src) img.setAttribute('src', src);
+      var link = img.parentNode;
+      if (link && link.classList.contains('zoom')) {
+        link.setAttribute('href', src);
+        link.setAttribute('aria-label', ui('zoom') + ': ' + img.alt);
+      }
+    });
+
     each('.lang button', function (b) {
       b.setAttribute('aria-pressed', String(b.getAttribute('data-lang') === lang));
     });
-    try { localStorage.setItem('lang', lang); } catch (e) { /* privater Modus */ }
+    each('[data-lb]', function (b) { b.setAttribute('aria-label', ui(b.getAttribute('data-lb'))); });
+    var lb = doc.getElementById('lightbox');
+    if (lb) lb.setAttribute('aria-label', ui('viewer'));
+    labelTheme();
+    if (!initial) store('lang', lang);
   }
 
   function currentRole() {
-    return lang === 'en' ? EN.role : DE.role;
+    return dict().role || DE.role;
   }
 
   /* ------------------------------------------------------------------
-     4. Scroll-Reveal
+     4. Helles / dunkles Design
+     ------------------------------------------------------------------ */
+  var themeBtn = doc.getElementById('theme');
+  var gridApi = null;
+
+  function isLight() {
+    return root.getAttribute('data-theme') === 'light';
+  }
+  function labelTheme() {
+    if (!themeBtn) return;
+    var t = ui(isLight() ? 'toDark' : 'toLight');
+    themeBtn.setAttribute('aria-label', t);
+    themeBtn.setAttribute('title', t);
+  }
+  function setTheme(light) {
+    if (light) root.setAttribute('data-theme', 'light');
+    else root.removeAttribute('data-theme');
+    var meta = doc.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute('content', light ? '#F4F1EA' : '#0B0B0C');
+    store('theme', light ? 'light' : 'dark');
+    labelTheme();
+    if (gridApi) gridApi.refresh();
+  }
+
+  /* ------------------------------------------------------------------
+     5. Bilder vergrößern
+     ------------------------------------------------------------------ */
+  function initLightbox() {
+    var dlg = doc.getElementById('lightbox');
+    var links = Array.prototype.slice.call(doc.querySelectorAll('a.zoom'));
+    if (!dlg || !dlg.showModal || !links.length) return;   // ohne <dialog>: Link öffnet einfach das Bild
+    var img = doc.getElementById('lb-img');
+    var cap = doc.getElementById('lb-cap');
+    var count = doc.getElementById('lb-count');
+    var index = 0;
+
+    function show(i) {
+      index = (i + links.length) % links.length;
+      var source = links[index].querySelector('img');
+      img.src = links[index].getAttribute('href');
+      img.alt = source.alt;
+      img.width = source.getAttribute('width');
+      img.height = source.getAttribute('height');
+      cap.textContent = source.alt;
+      count.textContent = (index + 1) + ' / ' + links.length;
+    }
+
+    links.forEach(function (a, i) {
+      a.addEventListener('click', function (e) {
+        e.preventDefault();
+        show(i);
+        dlg.showModal();
+      });
+    });
+
+    dlg.addEventListener('click', function (e) {
+      var btn = e.target.closest && e.target.closest('[data-lb]');
+      if (btn) {
+        var act = btn.getAttribute('data-lb');
+        if (act === 'close') dlg.close();
+        else show(index + (act === 'next' ? 1 : -1));
+        return;
+      }
+      if (e.target === dlg || e.target.classList.contains('lb-fig')) dlg.close();   // Klick neben das Bild
+    });
+    dlg.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight') show(index + 1);
+      else if (e.key === 'ArrowLeft') show(index - 1);
+    });
+    dlg.addEventListener('close', function () {
+      if (links[index]) links[index].focus();
+    });
+  }
+
+  /* ------------------------------------------------------------------
+     6. Scroll-Reveal
      ------------------------------------------------------------------ */
   function initReveal() {
-    var items = doc.querySelectorAll('.reveal');
     if (!('IntersectionObserver' in window)) {
       each('.reveal', function (el) { el.classList.add('in'); });
       return;
@@ -267,22 +271,29 @@
         io.unobserve(e.target);
       });
     }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
-    Array.prototype.forEach.call(items, function (el) { io.observe(el); });
+    each('.reveal', function (el) { io.observe(el); });
   }
 
   /* ------------------------------------------------------------------
-     5. Hero-Punktraster, das langsam dem Zeiger folgt
+     7. Hero-Punktraster, das langsam dem Zeiger folgt
      ------------------------------------------------------------------ */
   function initGrid() {
     var canvas = doc.querySelector('.hero-grid');
     var hero = doc.getElementById('hero');
-    if (!canvas || !canvas.getContext) return;
+    if (!canvas || !canvas.getContext) return null;
     var ctx = canvas.getContext('2d');
     var GAP = 28, REACH = 230;
     var w = 0, h = 0, dpr = 1;
     var px = -9999, py = -9999;   // geglättete Position
     var tx = -9999, ty = -9999;   // Ziel
     var visible = true, raf = 0, userMoved = false, t0 = performance.now();
+    var rgb = '242,239,233', base = 0.13;
+
+    function readColors() {
+      var v = getComputedStyle(root).getPropertyValue('--ink-rgb').replace(/\s/g, '');
+      if (v) rgb = v;
+      base = isLight() ? 0.2 : 0.13;
+    }
 
     function resize() {
       var rect = canvas.getBoundingClientRect();
@@ -297,6 +308,7 @@
     function draw() {
       ctx.clearRect(0, 0, w, h);
       var ox = (w % GAP) / 2, oy = (h % GAP) / 2;
+      var dim = 'rgba(' + rgb + ',' + base + ')';
       for (var y = oy; y < h; y += GAP) {
         for (var x = ox; x < w; x += GAP) {
           var dx = x - px, dy = y - py;
@@ -304,11 +316,11 @@
           var f = d2 < REACH * REACH ? 1 - Math.sqrt(d2) / REACH : 0;
           f = f * f;
           if (f > 0.02) {
-            ctx.fillStyle = 'rgba(242,239,233,' + (0.13 + f * 0.6).toFixed(3) + ')';
+            ctx.fillStyle = 'rgba(' + rgb + ',' + (base + f * 0.6).toFixed(3) + ')';
             var s = 2 + f * 2.4;
             ctx.fillRect(x - s / 2, y - s / 2, s, s);
           } else {
-            ctx.fillStyle = 'rgba(242,239,233,0.13)';
+            ctx.fillStyle = dim;
             ctx.fillRect(x - 1, y - 1, 2, 2);
           }
         }
@@ -359,12 +371,14 @@
     });
     if (reduced.addEventListener) reduced.addEventListener('change', kick);
 
+    readColors();
     resize();
     kick();
+    return { refresh: function () { readColors(); draw(); } };
   }
 
   /* ------------------------------------------------------------------
-     6. Dezenter Cursor-Ring (nur Maus/Trackpad; der Systemzeiger bleibt)
+     8. Dezenter Cursor-Ring (nur Maus/Trackpad; der Systemzeiger bleibt)
      ------------------------------------------------------------------ */
   function initCursor() {
     var el = doc.querySelector('.cursor');
@@ -400,10 +414,7 @@
      ------------------------------------------------------------------ */
   buildMatrix(doc.getElementById('matrix'));
   snapshotGerman();
-
-  var saved = null;
-  try { saved = localStorage.getItem('lang'); } catch (e) { /* ignorieren */ }
-  if (saved === 'en') setLang('en', true);
+  setLang(load('lang') || 'de', true);
 
   // Tippen erst, wenn die Matrix leuchtet
   renderRole(currentRole(), !reduced.matches, 1250);
@@ -411,8 +422,10 @@
   each('.lang button', function (b) {
     b.addEventListener('click', function () { setLang(b.getAttribute('data-lang')); });
   });
+  if (themeBtn) themeBtn.addEventListener('click', function () { setTheme(!isLight()); });
 
+  initLightbox();
   initReveal();
-  initGrid();
+  gridApi = initGrid();
   initCursor();
 })();
