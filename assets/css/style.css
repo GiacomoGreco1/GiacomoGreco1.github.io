@@ -375,6 +375,9 @@ strong { font-weight: 600; color: var(--ink); }
   transition: transform .9s var(--ease);
 }
 .shot--tablet { aspect-ratio: 16 / 10; }
+.shots { display: grid; gap: 12px; }
+.shots-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.private { font: 400 .78rem/1.5 var(--mono); letter-spacing: .02em; color: var(--mute); }
 .shot--photo  { aspect-ratio: 4 / 3; }
 .shot--phone  { aspect-ratio: 9 / 16; width: min(100%, 300px); }
 
@@ -472,7 +475,7 @@ strong { font-weight: 600; color: var(--ink); }
 .project-links a:hover .arr, .contact-links a:hover .arr { transform: translate(3px, -3px); }
 
 @media (hover: hover) {
-  .project:hover > .shot { transform: translateY(-8px); }
+  .project:hover > .shot, .project:hover > .shots { transform: translateY(-8px); }
   .project:hover > .project-body { transform: translateY(-3px); }
   .project:hover .shot img { transform: scale(1.045); }
   .project:hover .tags li::after { opacity: 1; }
@@ -484,10 +487,10 @@ strong { font-weight: 600; color: var(--ink); }
 
 @media (min-width: 900px) {
   .project { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 32px; align-items: start; }
-  .project > .shot { grid-row: 1; }
+  .project > .shot, .project > .shots { grid-row: 1; }
   .project > .project-body { grid-row: 1; }
 
-  .project--lead > .shot { grid-column: 1 / span 7; }
+  .project--lead > .shots { grid-column: 1 / span 7; }
   .project--lead > .project-body { grid-column: 8 / -1; }
 
   /* Blackouter: Text links, Telefon rechts */

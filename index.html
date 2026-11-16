@@ -117,10 +117,22 @@
 
         <!-- P/01 Scriba -->
         <article class="project project--lead reveal" aria-labelledby="p-scriba">
-          <figure class="shot shot--tablet">
-            <img src="assets/img/scriba-1.webp" width="1600" height="1000" loading="lazy" decoding="async"
-                 alt="Scriba auf einem Android-Tablet: handschriftliche Notizen mit erkannten Formen und Stift-Werkzeugleiste" data-i18n-alt="altScriba">
-          </figure>
+          <div class="shots">
+            <figure class="shot shot--tablet">
+              <img src="assets/img/scriba-1.webp" width="1600" height="1000" loading="lazy" decoding="async"
+                   alt="Scriba: handschriftliche Physik-Notizen mit Formel, erkannter Ellipse und gefülltem Dreieck, darüber die Werkzeugleiste" data-i18n-alt="altScriba">
+            </figure>
+            <div class="shots-row">
+              <figure class="shot shot--tablet">
+                <img src="assets/img/scriba-2.webp" width="1200" height="750" loading="lazy" decoding="async"
+                     alt="Scriba: importiertes PDF mit handschriftlichen Markierungen und Randnotiz" data-i18n-alt="altScriba2">
+              </figure>
+              <figure class="shot shot--tablet">
+                <img src="assets/img/scriba-3.webp" width="1200" height="750" loading="lazy" decoding="async"
+                     alt="Scriba: mit dem Lasso ausgewähltes Dreieck mit Griffen zum Verschieben, Skalieren und Drehen" data-i18n-alt="altScriba3">
+              </figure>
+            </div>
+          </div>
           <div class="project-body">
             <p class="project-id">P/01 <span data-i18n="p1Kind">Android · Tablet</span></p>
             <h3 id="p-scriba">Scriba</h3>
@@ -134,17 +146,16 @@
               <dt data-i18n="lblSolved">Gelöst</dt>
               <dd>
                 <ul class="solved">
-                  <li data-i18n="p1s1"><strong>Front-Buffer-Rendering</strong> für latenzfreie Stifteingabe, kombiniert mit Motion Prediction.</li>
-                  <li data-i18n="p1s2"><strong>Eigene Formerkennung</strong> für Kreis, Rechteck und Polygon – rein geometrisch.</li>
-                  <li data-i18n="p1s3"><strong>Atomares Speichern</strong> mit .bak-Backup in einem eigenen, versionierten Binärformat.</li>
-                  <li data-i18n="p1s4"><strong>Undo/Redo</strong> über Action-Objekte.</li>
+                  <li data-i18n="p1s1"><strong>Front-Buffer-Rendering</strong> für latenzfreie Stifteingabe: Der Strich wird am normalen Zeichenzyklus vorbei gezeichnet, Motion Prediction ergänzt die nächsten Millisekunden.</li>
+                  <li data-i18n="p1s2"><strong>Eigene Formerkennung:</strong> Stift kurz halten, und aus dem krummen Kreis wird ein sauberer – ebenso Rechteck, Dreieck und Polygon. Rein geometrisch, per Kleinste-Quadrate-Fit.</li>
+                  <li data-i18n="p1s3"><strong>Atomares Speichern</strong> (Temp-Datei, dann Rename) mit .bak-Backup in einem eigenen, versionierten Binärformat.</li>
+                  <li data-i18n="p1s4"><strong>Undo/Redo</strong> für alle Operationen über Action-Objekte.</li>
                   <li data-i18n="p1s5"><strong>100 % offline</strong> – die App fordert nicht einmal die INTERNET-Permission an.</li>
                 </ul>
               </dd>
             </dl>
             <p class="project-links">
-              <!-- TODO: Repo-Link eintragen, sobald das Repository öffentlich ist -->
-              <a href="https://github.com/GiacomoGreco1" target="_blank" rel="noopener"><span data-i18n="linkProfile">Code auf GitHub</span><span class="arr" aria-hidden="true">↗</span></a>
+              <span class="private" data-i18n="linkPrivate">Privates Repository – den Code zeige ich gern im Gespräch.</span>
             </p>
           </div>
         </article>
@@ -153,7 +164,7 @@
         <article class="project project--flip reveal" aria-labelledby="p-blackouter">
           <figure class="shot shot--phone">
             <img src="assets/img/blackouter-1.webp" width="900" height="1600" loading="lazy" decoding="async"
-                 alt="Blackouter: Sleep-Timer mit großen roten Dot-Matrix-Ziffern auf schwarzem Hintergrund" data-i18n-alt="altBlackouter">
+                 alt="Blackouter: Timer auf 30 Minuten mit Dot-Matrix-Ziffern, Schnellwahltasten, Ziffernblock und roter Start-Taste" data-i18n-alt="altBlackouter">
           </figure>
           <div class="project-body">
             <p class="project-id">P/02 <span data-i18n="p2Kind">Android · Sleep-Timer</span></p>
@@ -168,15 +179,14 @@
               <dt data-i18n="lblSolved">Gelöst</dt>
               <dd>
                 <ul class="solved">
-                  <li data-i18n="p2s1"><strong>Neustart statt Flickwerk:</strong> Der erste Versuch mit React Native scheiterte im Hintergrund. Umstieg auf AlarmManager (<code>setExactAndAllowWhileIdle</code>) und Device Admin (<code>lockNow</code>).</li>
+                  <li data-i18n="p2s1"><strong>Neustart statt Flickwerk:</strong> Der erste Versuch mit React Native scheiterte im Hintergrund. Umstieg auf AlarmManager (<code>setExactAndAllowWhileIdle</code>) und Device Admin (<code>lockNow</code>) – läuft jetzt auch bei geschlossener App.</li>
                   <li data-i18n="p2s2"><strong>Audio-Focus</strong> anfordern, um fremde Apps sauber zu pausieren.</li>
                   <li data-i18n="p2s3"><strong>Dot-Matrix-Ziffern</strong> per CustomPainter im Nothing-Design – dieselben Punkte wie oben im Namen.</li>
                 </ul>
               </dd>
             </dl>
             <p class="project-links">
-              <!-- TODO: Repo-Link eintragen -->
-              <a href="https://github.com/GiacomoGreco1" target="_blank" rel="noopener"><span data-i18n="linkProfile">Code auf GitHub</span><span class="arr" aria-hidden="true">↗</span></a>
+              <span class="private" data-i18n="linkPrivate">Privates Repository – den Code zeige ich gern im Gespräch.</span>
             </p>
           </div>
         </article>
@@ -185,7 +195,7 @@
         <article class="project reveal" aria-labelledby="p-fh6">
           <figure class="shot shot--phone">
             <img src="assets/img/fh6tempi-1.webp" width="900" height="1600" loading="lazy" decoding="async"
-                 alt="FH6 Tempi: Liste von Rundenzeiten mit Filtern und markierten persönlichen Rekorden" data-i18n-alt="altFh6">
+                 alt="FH6 Tempi: Liste von Rundenzeiten mit Fahrzeugklasse, Streckentyp und grün markierten Rekorden" data-i18n-alt="altFh6">
           </figure>
           <div class="project-body">
             <p class="project-id">P/03 <span data-i18n="p3Kind">Android · Offline</span></p>
@@ -201,14 +211,13 @@
               <dd>
                 <ul class="solved">
                   <li data-i18n="p3s1"><strong>APK aus der Cloud:</strong> GitHub Actions baut die App – ohne lokales Android-Setup.</li>
-                  <li data-i18n="p3s2"><strong>Filter, Sortierung und persönliche Rekorde</strong> vollständig offline auf dem Gerät.</li>
+                  <li data-i18n="p3s2"><strong>Filter, Sortierung und persönliche Rekorde</strong> pro Strecke, grün markiert – vollständig offline auf dem Gerät.</li>
                   <li data-i18n="p3s3"><strong>JSON-Import/Export</strong> für Backup und Gerätewechsel.</li>
                 </ul>
               </dd>
             </dl>
             <p class="project-links">
-              <!-- TODO: Repo-Link eintragen -->
-              <a href="https://github.com/GiacomoGreco1" target="_blank" rel="noopener"><span data-i18n="linkProfile">Code auf GitHub</span><span class="arr" aria-hidden="true">↗</span></a>
+              <span class="private" data-i18n="linkPrivate">Privates Repository – den Code zeige ich gern im Gespräch.</span>
             </p>
           </div>
         </article>
