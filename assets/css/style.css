@@ -573,8 +573,7 @@ strong { font-weight: 600; color: var(--ink); }
 .project--stack .shots-row { margin-bottom: 28px; transition: transform .5s var(--ease); }
 .project--stack h3 { font-size: clamp(2rem, 3.6vw, 3rem); }
 @media (min-width: 900px) {
-  .duo { grid-template-columns: 7fr 5fr; column-gap: 56px; align-items: start; }
-  .duo > :nth-child(2) { margin-top: 120px; }
+  .duo { grid-template-columns: 1fr 1fr; column-gap: 56px; align-items: start; }
 }
 
 /* ---------- Erfahrung: Leiterbahn ---------- */
