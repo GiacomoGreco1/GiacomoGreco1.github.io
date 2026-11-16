@@ -429,6 +429,7 @@ strong { font-weight: 600; color: var(--ink); }
 .shots-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .private { font: 400 .78rem/1.5 var(--mono); letter-spacing: .02em; color: var(--mute); }
 .shot--portrait { aspect-ratio: 4 / 5; }
+.shot--square { aspect-ratio: 1 / 1; }
 .shot .zoom { display: block; height: 100%; cursor: zoom-in; }
 .shot .zoom:focus-visible { outline-offset: -4px; }
 .shot--phone  { aspect-ratio: 9 / 16; width: min(100%, 300px); }
