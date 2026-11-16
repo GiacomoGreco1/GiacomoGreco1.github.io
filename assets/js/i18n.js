@@ -22,7 +22,6 @@ window.I18N = {
     role: 'IT specialist for application development',
     claim: 'I build software you can <em>touch</em> – from microcontroller firmware to Android apps.',
     ctaProjects: 'View projects',
-    ctaCv: 'CV (PDF)',
 
     hProjects: 'Projects',
     leadProjects: 'Three Android apps and two devices. All designed, built and finished by me – including the parts where the first approach did not work.',
@@ -127,7 +126,6 @@ window.I18N = {
     role: 'Tecnico informatico – sviluppo applicazioni',
     claim: 'Costruisco software che si può <em>toccare</em> – dal firmware per microcontrollori all’app Android.',
     ctaProjects: 'Vedi i progetti',
-    ctaCv: 'Curriculum (PDF)',
 
     hProjects: 'Progetti',
     leadProjects: 'Tre app Android e due dispositivi. Tutto progettato, costruito e portato a termine da me – compresi i punti in cui il primo tentativo non ha funzionato.',
